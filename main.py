@@ -24,16 +24,12 @@ def root(request: Request):
     api_key = request.headers.get("x-api-key")
     if api_key != "12345678":
         return JSONResponse(content={"detail": "Clé API non reconnue"},status_code=403)
-    with open("welcome.html", "r", encoding="utf-8") as file:
-        html_content = file.read()
-    return Response(content=html_content, status_code=200, media_type="text/html")
-
-@app.get("/hello")
-def hello(request: Request):
     accept_headers = request.headers.get("Accept")
     if accept_headers not in ("text/html", "text/plain"):
         return JSONResponse(content={"message": "Unsupported Media Type"}, status_code=400)
-    return JSONResponse(content={"message": "Hello, world!"}, status_code=200)
+    with open("welcome.html", "r", encoding="utf-8") as file:
+        html_content = file.read()
+    return Response(content=html_content, status_code=200, media_type="text/html")
 
 @app.get("/events")
 def list_events():
